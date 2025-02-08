@@ -26,11 +26,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/Podcast/podcast-reporte/podcast-reporte.component').then((m) => m.PodcastReporteComponent),
   },
-  {
-    path: 'locutor/crear',
-    loadComponent: () =>
-      import('./components/Locutor/locutor-crear/locutor-crear.component').then((m) => m.LocutorCrearComponent),
-  },
+
   {
     path: 'locutor/listar',
     loadComponent: () =>

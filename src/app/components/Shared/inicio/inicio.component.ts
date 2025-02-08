@@ -7,11 +7,12 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { AcercaDeComponent } from '../acerca-de/acerca-de.component';
 import { InformacionComponent } from '../informacion/informacion.component';
 import { MainContentComponent } from '../main-content/main-content.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [ NavbarComponent,FooterComponent,RouterModule, FormsModule, CommonModule, RouterModule, CommonModule, AcercaDeComponent, InformacionComponent, MainContentComponent,NavbarComponent],
+  imports: [ NavbarComponent,RouterModule, FormsModule, CommonModule, RouterModule, CommonModule, AcercaDeComponent, InformacionComponent, MainContentComponent,NavbarComponent,HttpClientModule],
   templateUrl: './inicio.component.html',
   styles: ``
 })
