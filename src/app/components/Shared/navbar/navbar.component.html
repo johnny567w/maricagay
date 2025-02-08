@@ -1,0 +1,59 @@
+<!-- Navbar Mejorada -->
+<nav class="relative flex flex-wrap items-center justify-between py-6 px-6 md:py-8 md:px-10 bg-[#8b5e3b] text-white shadow-lg">
+  <div class="text-2xl md:text-3xl font-bold">
+    FJCS Podcast
+  </div>
+
+  <!-- Botón de menú para móviles -->
+  <div class="flex md:hidden">
+    <button (click)="toggleMenu()">
+      <img *ngIf="!menuOpen" src="https://img.icons8.com/fluent-systems-regular/2x/menu-squared-2.png" width="40" height="40" />
+      <img *ngIf="menuOpen" src="https://img.icons8.com/fluent-systems-regular/2x/close-window.png" width="40" height="40" />
+    </button>
+  </div>
+
+  <!-- Enlaces de navegación -->
+  <div [ngClass]="{'hidden': !menuOpen, 'block': menuOpen}" class="w-full md:w-auto md:flex flex-col md:flex-row text-right text-lg font-semibold mt-5 md:mt-0">
+    <a (click)="navigateTo('/inicio')" class="block md:inline-block px-4 py-3 hover:text-[#c8a876]">
+      Inicio
+    </a>
+
+    <!-- 🎤 Menú de Locutores -->
+    <div class="relative md:inline-block">
+      <button (click)="toggleLocutorMenu()" class="px-4 py-3 hover:text-[#c8a876] focus:outline-none w-full md:w-auto">
+        Locutores ▼
+      </button>
+      <div *ngIf="locutorMenuOpen" class="absolute left-1/2 -translate-x-1/2 md:left-0 md:-translate-x-0 mt-2 bg-[#8b5e3b] text-white py-2 rounded-lg shadow-lg min-w-[180px] text-center">
+        <a (click)="navigateTo('/locutor/crear')" class="block px-4 py-2 hover:bg-[#c8a876]">Crear Locutor</a>
+        <a (click)="navigateTo('/locutor/listar')" class="block px-4 py-2 hover:bg-[#c8a876]">Listar Locutores</a>
+      </div>
+    </div>
+
+    <!-- 🎙 Menú de Podcast -->
+    <div class="relative md:inline-block">
+      <button (click)="togglePodcastMenu()" class="px-4 py-3 hover:text-[#c8a876] focus:outline-none w-full md:w-auto">
+        Podcast ▼
+      </button>
+      <div *ngIf="podcastMenuOpen" class="absolute left-1/2 -translate-x-1/2 md:left-0 md:-translate-x-0 mt-2 bg-[#8b5e3b] text-white py-2 rounded-lg shadow-lg min-w-[180px] text-center">
+        <a (click)="navigateTo('/podcast/list')" class="block px-4 py-2 hover:bg-[#c8a876]">Ver Todos</a>
+        <a (click)="navigateTo('/podcast/crear')" class="block px-4 py-2 hover:bg-[#c8a876]">Crear Podcast</a>
+        <a (click)="navigateTo('/podcast/reporte')" class="block px-4 py-2 hover:bg-[#c8a876]">Reportes</a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Botón de contacto -->
+  <div class="hidden md:flex md:w-auto px-4 py-2 md:rounded">
+    <a href="tel:+123">
+      <div class="flex items-center h-12 w-40 rounded-md bg-[#c8a876] text-[#8b5e3b] font-semibold p-3 shadow-md hover:bg-[#b87d4b] transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6 mr-2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+              d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+        </svg>
+        Escúchanos ahora!
+      </div>
+    </a>
+  </div>
+</nav>

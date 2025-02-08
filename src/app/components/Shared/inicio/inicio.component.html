@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+<main
+  [ngClass]="{
+  }"
+  class="relative bg-cover bg-no-repeat"
+  style="background-image: url('assets/img/fondoprincipal.png');"
+>
+  <div class="absolute inset-0 bg-black opacity-45"></div>
+
+  <section *ngIf="showHome" class="relative z-10">
+    <app-main-content></app-main-content>
+    <app-acerca-de></app-acerca-de>
+    <app-informacion></app-informacion>
+    <app-footer></app-footer>
+    
+  </section>
+</main>

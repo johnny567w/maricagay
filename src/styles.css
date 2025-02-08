@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+nav {
+    position: relative;
+    z-index: 40;
+  }
+  
+  .md\:absolute {
+    z-index: 50 !important;
+  }
+  
