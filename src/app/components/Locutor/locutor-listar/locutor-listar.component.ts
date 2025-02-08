@@ -1,50 +1,68 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NavbarComponent } from '../../Shared/navbar/navbar.component';
+import { PodcastService } from '../../../services/podcast.service';
+import { Locutor } from '../../../models/locutor.model';
+import { Podcast } from '../../../models/podcast.model';
 
 @Component({
-  selector: 'app-locutor-listar',
+  selector: 'app-locutor-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NavbarComponent, HttpClientModule],
   templateUrl: './locutor-listar.component.html',
+  providers: [PodcastService] 
 })
-export class LocutorListarComponent {
-  locutores = [
-    {
-      id: 1,
-      nombreCompleto: 'Carlos Mendoza',
-      nickname: 'TechMaster',
-      email: 'carlos@podcast.com',
-      pais: 'México',
-      especialidad: 'Tecnología',
-      foto: 'https://source.unsplash.com/100x100/?portrait,man',
-    },
-    {
-      id: 2,
-      nombreCompleto: 'María López',
-      nickname: 'AstroGeek',
-      email: 'maria@podcast.com',
-      pais: 'España',
-      especialidad: 'Astronomía',
-      foto: 'https://source.unsplash.com/100x100/?portrait,woman',
-    },
-    {
-      id: 3,
-      nombreCompleto: 'Javier Ríos',
-      nickname: 'MusicLover',
-      email: 'javier@podcast.com',
-      pais: 'Argentina',
-      especialidad: 'Música',
-      foto: 'https://source.unsplash.com/100x100/?portrait,artist',
-    },
-  ];
+export class LocutorListComponent implements OnInit {
+  locutores: Locutor[] = [];
+  mensajeError: string = '';
+  mensajeExito: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private podcastService: PodcastService) {}
 
-  verDetalles(id: number) {
+  ngOnInit(): void {
+    this.cargarLocutores();
+  }
+
+  cargarLocutores() {
+    this.podcastService.getAllPodcasts().subscribe(
+      (podcasts: Podcast[]) => {
+        this.locutores = [];
+        this.mensajeError = '';
+        
+        podcasts.forEach(podcast => {
+          if (!this.locutores.some(l => l.mail === podcast.locutorPrincipal.mail)) {
+            this.locutores.push(podcast.locutorPrincipal);
+          }
+
+          podcast.locutoresInvitados.forEach(inv => {
+            if (!this.locutores.some(l => l.mail === inv.mail)) {
+              this.locutores.push(inv);
+            }
+          });
+        });
+
+        if (this.locutores.length === 0) {
+          this.mensajeError = 'No hay locutores disponibles.';
+        } else {
+          this.mensajeExito = `Se han encontrado ${this.locutores.length} locutores.`;
+        }
+      },
+      (error) => {
+        this.mensajeError = '❌ Error al cargar los locutores. Inténtalo nuevamente.';
+        this.mensajeExito = '';
+      }
+    );
+  }
+
+  verDetalles(id: string) {
+    this.mensajeExito = `🔎 Mostrando detalles del locutor con correo: ${id}`;
   }
 
   eliminarLocutor(index: number) {
-
-}
+    if (confirm('¿Estás seguro de que deseas eliminar este locutor de la lista?')) {
+      this.locutores.splice(index, 1);
+      this.mensajeExito = 'Locutor eliminado correctamente.';
+    }
+  }
 }

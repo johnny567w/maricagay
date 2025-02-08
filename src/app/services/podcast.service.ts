@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Podcast } from '../models/podcast.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' 
 })
 export class PodcastService {
   private apiUrl = 'http://localhost:8080/api/podcast';
@@ -20,6 +20,11 @@ export class PodcastService {
   }
 
   createPodcast(podcast: Podcast): Observable<Podcast> {
+    console.log('Enviando al backend:', podcast); // 🔹 Verificar si los datos se están enviando
     return this.http.post<Podcast>(this.apiUrl, podcast);
+  }
+
+  deletePodcast(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

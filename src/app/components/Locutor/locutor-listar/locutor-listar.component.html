@@ -1,27 +1,32 @@
+<app-navbar></app-navbar>
+
 <div class="max-w-3xl mx-auto mt-16">
-    <h1 class="text-3xl font-bold text-[#8b5e3b] mb-6 text-center">Lista de Locutores</h1>
-  
-    <ul class="bg-white shadow-lg rounded-lg overflow-hidden">
-      <li *ngFor="let locutor of locutores; let i = index" [ngClass]="{'border-t border-[#c8a876]': i !== 0}">
-        <div class="px-6 py-5 flex items-center space-x-4">
-          <img [src]="locutor.foto" alt="Foto de {{ locutor.nombreCompleto }}" class="w-16 h-16 rounded-full shadow-md">
-          <div class="flex-1">
-            <h3 class="text-lg font-semibold text-[#8b5e3b]">{{ locutor.nombreCompleto }}</h3>
-            <p class="text-sm text-gray-500">🎙 Nickname: <span class="font-semibold">{{ locutor.nickname }}</span></p>
-            <p class="text-sm text-gray-500">📍 País: <span class="font-semibold">{{ locutor.pais }}</span></p>
-            <p class="text-sm text-gray-500">📧 Email: <span class="font-semibold">{{ locutor.email }}</span></p>
-            <p class="text-sm text-gray-500">📚 Especialidad: <span class="font-semibold">{{ locutor.especialidad }}</span></p>
-          </div>  
-          <div class="flex space-x-2">
-            <button (click)="verDetalles(locutor.id)" class="bg-[#b87d4b] text-white px-4 py-2 rounded-lg hover:bg-[#8b5e3b] transition">
-              Ver Detalles
-            </button>
-            <button (click)="eliminarLocutor(i)" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
-              Eliminar
-            </button>
-          </div>
-        </div>
-      </li>
-    </ul>
+  <h1 class="text-3xl font-bold text-[#8b5e3b] mb-6 text-center">Lista de Locutores</h1>
+
+  <div *ngIf="mensajeError" class="p-3 mb-4 bg-red-100 text-red-700 text-center rounded-lg">
+    {{ mensajeError }}
   </div>
-  
+  <div *ngIf="mensajeExito" class="p-3 mb-4 bg-green-100 text-green-700 text-center rounded-lg">
+    {{ mensajeExito }}
+  </div>
+
+  <ul *ngIf="locutores.length > 0" class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <li *ngFor="let locutor of locutores; let i = index" [ngClass]="{'border-t border-[#c8a876]': i !== 0}">
+      <div class="px-6 py-5 flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500">🎙 Nickname: <span class="font-semibold">{{ locutor.nickname }}</span></p>
+          <p class="text-sm text-gray-500">📍 País: <span class="font-semibold">{{ locutor.pais }}</span></p>
+          <p class="text-sm text-gray-500">📧 Email: <span class="font-semibold">{{ locutor.mail }}</span></p>
+        </div>  
+        <div class="flex space-x-2">
+          <button (click)="verDetalles(locutor.mail)" class="bg-[#b87d4b] text-white px-4 py-2 rounded-lg hover:bg-[#8b5e3b] transition">
+            Ver Detalles
+          </button>
+          <button (click)="eliminarLocutor(i)" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
