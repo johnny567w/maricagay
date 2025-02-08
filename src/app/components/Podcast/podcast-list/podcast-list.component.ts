@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from '../../Shared/navbar/navbar.component';
-import { Podcast } from '../../../models/podcast.model';
 import { PodcastService } from '../../../services/podcast.service';
+import { Podcast } from '../../../models/podcast.model';
 
 @Component({
   selector: 'app-podcast-list',
@@ -16,28 +15,31 @@ import { PodcastService } from '../../../services/podcast.service';
 export class PodcastListComponent implements OnInit {
   podcasts: Podcast[] = [];
   podcastMasPopular!: Podcast;
-  detallesVisibles: { [key: string]: boolean } = {}; // 🔹 Controla qué podcasts muestran detalles
+  detallesVisibles: { [key: string]: boolean } = {};
+  mensajeConfirmacion: string = ''; 
+  errorCargar: string = ''; 
 
-  constructor(private router: Router, private podcastService: PodcastService) {}
+  constructor(private podcastService: PodcastService) {}
 
   ngOnInit(): void {
     this.cargarPodcasts();
   }
 
-  /** 🔹 Cargar todos los podcasts desde la base de datos */
   cargarPodcasts() {
     this.podcastService.getAllPodcasts().subscribe(
       (data) => {
         this.podcasts = data;
         this.obtenerPodcastMasPopular();
+        this.mensajeConfirmacion = `Se han cargado ${this.podcasts.length} podcasts.`;
+        this.errorCargar = '';
       },
       (error) => {
-        console.error('Error al obtener los podcasts:', error);
+        this.errorCargar = '❌ Error al cargar los podcasts. Inténtalo nuevamente.';
+        this.mensajeConfirmacion = '';
       }
     );
   }
 
-  /** 🔹 Encontrar el podcast con más reproducciones */
   obtenerPodcastMasPopular() {
     if (this.podcasts.length > 0) {
       this.podcastMasPopular = this.podcasts.reduce((max, podcast) =>
@@ -46,7 +48,6 @@ export class PodcastListComponent implements OnInit {
     }
   }
 
-  /** 🔹 Ordenar los podcasts */
   ordenarPor(campo: 'reproducciones' | 'fecha') {
     this.podcasts.sort((a, b) => {
       if (campo === 'reproducciones') {
@@ -57,17 +58,16 @@ export class PodcastListComponent implements OnInit {
     });
   }
 
-  /** 🔹 Alternar la visibilidad de los detalles */
   toggleDetalles(id: string) {
     this.detallesVisibles[id] = !this.detallesVisibles[id];
   }
 
-  /** 🔹 Eliminar un podcast */
   eliminarPodcast(id: string, index: number) {
     if (confirm('¿Estás seguro de que deseas eliminar este podcast?')) {
       this.podcastService.deletePodcast(id).subscribe(() => {
         this.podcasts.splice(index, 1); 
         this.obtenerPodcastMasPopular();
+        this.mensajeConfirmacion = 'Podcast eliminado correctamente.';
       });
     }
   }
