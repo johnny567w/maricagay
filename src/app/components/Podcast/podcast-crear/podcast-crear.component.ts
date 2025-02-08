@@ -23,7 +23,7 @@ export class PodcastCrearComponent {
       temaGeneral: [''],
       temaDia: [''],
       fechaTema: [''],
-      locutorPrincipal: this.fb.group({
+      locutorPrincipal: this.fb.group({  // Usar un FormGroup aquí para los datos del locutor
         mail: [''],
         nickname: [''],
         pais: ['']
@@ -31,6 +31,7 @@ export class PodcastCrearComponent {
       locutoresInvitados: this.fb.array([]),
       reproducciones: [0]
     });
+    
   }
 
   get locutoresInvitados(): FormArray {

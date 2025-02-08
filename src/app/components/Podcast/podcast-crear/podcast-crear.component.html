@@ -1,49 +1,69 @@
 <app-navbar></app-navbar>
+
 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <h1 class="text-3xl font-bold text-[#8b5e3b] mb-6 text-center">Crear Podcast</h1>
-  
-      <div class="mb-4">
-        <label class="block font-semibold text-[#8b5e3b]">Tema General</label>
-        <input formControlName="temaGeneral" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Ingrese el tema general">
+  <h1 class="text-3xl font-bold text-[#8b5e3b] mb-6 text-center">Crear Podcast</h1>
+
+  <form [formGroup]="podcastForm" (ngSubmit)="submit()">
+
+    <!-- Tema General -->
+    <div class="mb-4">
+      <label class="block font-semibold text-[#8b5e3b]">Tema General</label>
+      <input formControlName="temaGeneral" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Ingrese el tema general">
+    </div>
+
+    <!-- Locutor Principal -->
+    <div class="mb-4" formGroupName="locutorPrincipal">
+      <h2 class="font-semibold text-[#8b5e3b]">Locutor Principal</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <input formControlName="mail" type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Correo">
+        <input formControlName="nickname" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Nickname">
+        <input formControlName="pais" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="País de origen">
       </div>
-  
-      <div class="mb-4">
-        <h2 class="font-semibold text-[#8b5e3b]">Locutor Principal</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <input formControlName="locutorPrincipal.mail" type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Correo">
-          <input formControlName="locutorPrincipal.nickname" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Nickname">
-          <input formControlName="locutorPrincipal.paisOrigen" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="País de origen">
+    </div>
+
+    <!-- Locutores Invitados -->
+    <div class="mb-4">
+      <h2 class="font-semibold text-[#8b5e3b]">Locutores Invitados</h2>
+      <div formArrayName="locutoresInvitados">
+        <div *ngFor="let locutor of locutoresInvitados.controls; let i = index" [formGroupName]="i">
+          <input formControlName="mail" type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Correo">
+          <input formControlName="nickname" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Nickname">
+          <input formControlName="pais" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="País">
+          <button type="button" (click)="eliminarLocutor(i)" class="text-red-500 font-semibold">Eliminar locutor</button>
         </div>
       </div>
-  
-      <div class="mb-4">
-        <h2 class="font-semibold text-[#8b5e3b]">Locutores Invitados</h2>
-          <input [formControlName]="'mail'" type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Correo">
-          <input [formControlName]="'nickname'" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Nickname">
-          <input [formControlName]="'paisOrigen'" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="País">
-        </div>
-        <button type="button" (click)="agregarLocutor()" class="text-blue-500 font-semibold">+ Agregar locutor</button>
-      </div>
-  
-      <div class="mb-4">
-        <label class="block font-semibold text-[#8b5e3b]">Tema del Día</label>
-        <input formControlName="temaDia" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Ingrese el tema del día">
-      </div>
-  
-      <div class="mb-4">
-        <label class="block font-semibold text-[#8b5e3b]">Fecha</label>
-        <input formControlName="fecha" type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition">
-      </div>
-  
-      <div class="mb-4">
-        <label class="block font-semibold text-[#8b5e3b]">Subir Audio</label>
-        <input type="file" (change)="onFileChange($event)" class="w-full px-4 py-2 border border-gray-300 rounded-lg cursor-pointer">
-      </div>
-  
-      <div class="text-center">
-        <button type="submit" class="bg-[#8b5e3b] text-white px-6 py-3 rounded-lg hover:bg-[#6d4f3b] transition">
-          Guardar Podcast
-        </button>
-      </div>
- 
-  
+      <button type="button" (click)="agregarLocutor()" class="text-blue-500 font-semibold">+ Agregar locutor</button>
+    </div>
+
+    <!-- Tema del Día -->
+    <div class="mb-4">
+      <label class="block font-semibold text-[#8b5e3b]">Tema del Día</label>
+      <input formControlName="temaDia" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition" placeholder="Ingrese el tema del día">
+    </div>
+
+    <!-- Fecha -->
+    <div class="mb-4">
+      <label class="block font-semibold text-[#8b5e3b]">Fecha</label>
+      <input formControlName="fechaTema" type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition">
+    </div>
+
+    <!-- Subir Audio -->
+    <div class="mb-4">
+      <label class="block font-semibold text-[#8b5e3b]">Subir Audio</label>
+      <input type="file" (change)="onFileChange($event)" class="w-full px-4 py-2 border border-gray-300 rounded-lg cursor-pointer">
+    </div>
+
+    <!-- Reproducciones -->
+    <div class="mb-4">
+      <label class="block font-semibold text-[#8b5e3b]">Reproducciones</label>
+      <input formControlName="reproducciones" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[#b87d4b] focus:ring-[#b87d4b] focus:ring-2 transition">
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="text-center">
+      <button type="submit" class="bg-[#8b5e3b] text-white px-6 py-3 rounded-lg hover:bg-[#6d4f3b] transition" [disabled]="!podcastForm.valid">
+        Guardar Podcast
+      </button>
+    </div>
+  </form>
+</div>
